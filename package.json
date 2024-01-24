@@ -7,7 +7,7 @@
 		"test": "vitest",
 		"start": "nodemon ./src/app.js"
 	},
-	"type":"module",
+	"type": "module",
 	"keywords": [],
 	"author": "",
 	"license": "ISC",

@@ -1,10 +1,9 @@
 import express from "express";
-import UserController from "../controllers/UserController.js";
+
+import create from "../controllers/RegisterController.js";
 const userRoutes = express();
 
-userRoutes.post("/cadastrar", async (req, res) => {
-  await UserController.create(req, res);
-});
+userRoutes.post("/cadastrar", create);
 userRoutes.post("login");
 
 // midd autenticação a partir daqui
