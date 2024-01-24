@@ -15,7 +15,7 @@ const loginSocial = async (req, res) => {
       },
     })
     if (!user) {
-      const newUser = User.create({
+      await User.create({
         nome: given_name,
         sobrenome: family_name,
         email,

@@ -1,5 +1,7 @@
 import express from 'express'
-import { UserController, userLogin, loginSocial } from '../controllers/index.js'
+import loginSocial from '../controllers/loginSocial.js'
+import userLogin from '../controllers/loginController.js'
+import UserController from '../controllers/UserController.js'
 const userRoutes = express()
 
 userRoutes.post('/cadastrar', async (req, res) => {
@@ -7,6 +9,7 @@ userRoutes.post('/cadastrar', async (req, res) => {
 })
 userRoutes.post('/login', userLogin)
 userRoutes.post('/login/social', loginSocial)
+userRoutes.post('/login/out')
 
 // midd autenticação a partir daqui
 // home recebe params p/ buscar tags
