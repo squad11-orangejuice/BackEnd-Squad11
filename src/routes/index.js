@@ -1,4 +1,4 @@
-import userRoutes from './userRoutes'
-import portfolioRoutes from './portfolioRoutes'
+import userRoutes from "./userRoutes.js";
+import portfolioRoutes from "./portfolioRoutes.js";
 
-export { userRoutes, portfolioRoutes }
+export { userRoutes, portfolioRoutes };
