@@ -1,8 +1,8 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes } from "sequelize";
 
-const database = require("../database/db");
+import database from "../database/db.js";
 
-const User = database.define("user", {
+const User = await database.define("user", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -33,4 +33,4 @@ const User = database.define("user", {
   },
 });
 
-module.exports = User;
+export default User;
