@@ -32,7 +32,7 @@ const userLogin = async (req, res) => {
       user_id: user.id,
     })
 
-    const { password: _, ...userLogado } = user
+    const { password: _, google_id: __, ...userLogado } = user
     return res.status(200).json({ userLogado, token })
   } catch (error) {
     console.error(error, 'Erro no controller de login')
