@@ -1,8 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize'
 
-import database from "../database/db.js";
+import database from '../database/db.js'
 
-const User = await database.define("user", {
+const User = await database.define('user', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -31,6 +31,6 @@ const User = await database.define("user", {
     unique: true,
     allowsNull: true,
   },
-});
+})
 
-export default User;
+export default User
