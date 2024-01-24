@@ -1,16 +1,16 @@
-import express from "express";
-import dotenv from "dotenv";
-import { userRoutes, portfolioRoutes } from "./src/routes/index.js";
+import express from 'express'
+import dotenv from 'dotenv'
+import { userRoutes, portfolioRoutes } from './src/routes/index.js'
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
-app.use(express.json());
-app.use(userRoutes);
-app.use(portfolioRoutes);
+const app = express()
+app.use(express.json())
+app.use(userRoutes)
+app.use(portfolioRoutes)
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 
-app.listen(port);
+app.listen(port)
 
-export default app;
+export default app
