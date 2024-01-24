@@ -2,6 +2,8 @@ import database from '../database/db.js'
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
 import Token from '../models/token.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 /* controller login social: recebe no body nome, sobrenome, email e id do google. Busca usuario no db, caso positivo gera token. Se não existe o usuário, gera um novo cadastro deixando password como null e adicionando id do google. Após, gera um token e envia para a tabela de tokens. */
 
