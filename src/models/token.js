@@ -1,9 +1,9 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize'
 
-import database from "../database/db.js";
-import User from "./user.js";
+import database from '../database/db.js'
+import User from './user.js'
 
-const Token = database.define("token", {
+const Token = database.define('token', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -20,15 +20,15 @@ const Token = database.define("token", {
     allowsNull: false,
     default: true,
   },
-});
+})
 
 Token.belongsTo(User, {
   constraint: true,
-  foreignKey: "user_id",
-});
+  foreignKey: 'user_id',
+})
 
 User.hasMany(Token, {
-  foreignKey: "user_id",
-});
+  foreignKey: 'user_id',
+})
 
-export default Token;
+export default Token
