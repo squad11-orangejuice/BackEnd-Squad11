@@ -2,15 +2,15 @@ import Sequelize from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
 
+console.log(process.env.DB_PASSWORD);
 const sequelize = new Sequelize(
-  process.env.DB_NAME || "orange_portfolio",
-  process.env.DB_USER || "postgres",
-  process.env.DB_PASSWORD || "admin",
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
     dialect: "postgres",
     host: process.env.DB_HOST || "localhost",
     port: process.env.DB_PORT || 5432,
   }
 );
-
 export default sequelize;
