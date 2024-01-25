@@ -9,33 +9,42 @@ const create = async (req, res) => {
   await database.sync();
 
   const { nome, sobrenome, email, password } = req.body;
+  try {
+    const userExists = await User.findOne({ where: { email } });
 
-  let newPassword = req.body.password;
-  newPassword = newPassword.toString();
-  let salt = await bcrypt.genSalt(12);
-  const passwordHash = await bcrypt.hash(newPassword, salt);
+    if (userExists) {
+      return res.status(400).json({ mensagem: "E-mail já cadastrado!" });
+    }
 
-  const user = await User.create({
-    nome,
-    sobrenome,
-    email,
-    password: passwordHash,
-  });
+    let newPassword = password;
+    newPassword = newPassword.toString();
+    let salt = await bcrypt.genSalt(12);
+    const passwordHash = await bcrypt.hash(newPassword, salt);
 
-  const token = jwt.sign(
-    { id: user.id },
-    process.env.JWT_PASSWORD || "1209u39u01uqeuribquirbiqg791t4g791g91"
-  );
+    const user = await User.create({
+      nome,
+      sobrenome,
+      email,
+      password: passwordHash,
+    });
 
-  await Token.create({
-    token,
-    isValid: true,
-    user_id: user.id,
-  });
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_PASSWORD || "1209u39u01uqeuribquirbiqg791t4g791g91"
+    );
 
-  const { password: _, userLogado } = user;
+    await Token.create({
+      token,
+      isValid: true,
+      user_id: user.id,
+    });
 
-  return res.status(201).json({ userLogado, token: token });
+    const { password: _, userLogado } = user;
+
+    return res.status(201).json({ userLogado, token: token });
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno no servidor!" });
+  }
 };
 
 export default create;
