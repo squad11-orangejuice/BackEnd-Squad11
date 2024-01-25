@@ -31,20 +31,7 @@ const create = async (req, res) => {
       password: passwordHash,
     });
 
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_PASSWORD || "1209u39u01uqeuribquirbiqg791t4g791g91"
-    );
-
-    await Token.create({
-      token,
-      isValid: true,
-      user_id: user.id,
-    });
-
-    const { password: _, userLogado } = user;
-
-    return res.status(201).json({ userLogado, token: token });
+    return res.status(201).json({ mensagem: "Cadastro feito com sucesso!" });
   } catch (error) {
     return res.status(500).json({ mensagem: "Erro interno no servidor!" });
   }
