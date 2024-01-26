@@ -1,6 +1,9 @@
 import express from 'express'
+import middlewareAutenticacao from '../middleware/middlewareAutenticacao'
 
 const portfolioRoutes = express()
+// Middleware utilizado para todas as rotas
+portfolioRoutes.use(middlewareAutenticacao)
 
 portfolioRoutes.get('/home')
 portfolioRoutes.post('/projeto/novo')
