@@ -2,7 +2,7 @@ import express from 'express'
 
 const portfolioRoutes = express()
 
-portfolioRoutes.get('/portfolio')
+portfolioRoutes.get('/home')
 portfolioRoutes.post('/projeto/novo')
 // midd verificar se projetos pertencem ao usuário logado
 portfolioRoutes.put('/projeto/editar/:id')
