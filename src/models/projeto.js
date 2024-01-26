@@ -1,9 +1,9 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes } from "sequelize";
 
-import { define } from '../database/db'
-import User, { hasMany } from './user'
+import database from "../database/db.js";
+import User from "./user.js";
 
-const Projeto = define('projeto', {
+const Projeto = database.define("projeto", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -29,15 +29,15 @@ const Projeto = define('projeto', {
     type: DataTypes.DATE,
     allowsNull: false,
   },
-})
+});
 
 Projeto.belongsTo(User, {
   constraint: true,
-  foreignKey: 'user_id',
-})
+  foreignKey: "user_id",
+});
 
-hasMany(Projeto, {
-  foreignKey: 'user_id',
-})
+User.hasMany(Projeto, {
+  foreignKey: "user_id",
+});
 
-export default Projeto
+export default Projeto;
