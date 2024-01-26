@@ -1,12 +1,24 @@
-/*Configuração inicial*/
+import express from 'express'
+import dotenv from 'dotenv'
+import userRoutes from './src/routes/userRoutes.js'
+import portfolioRoutes from './src/routes/portfolioRoutes.js'
+import cors from 'cors'
 
-const express = require("express");
-require("dotenv").config();
+dotenv.config()
 
-const app = express();
-app.use(express.json());
+const app = express()
+app.use(express.json())
 
-const port = process.env.PORT || 3000;
+app.use(userRoutes)
+app.use(portfolioRoutes)
+const corsConfiguracao = {
+  // origin: 'linkprovisorio.com',
+  optionsSuccessStatus: 200,
+}
+app.use(cors(corsConfiguracao))
 
-app.listen(port);
-module.exports = app;
+const port = process.env.PORT || 3000
+
+app.listen(port)
+
+export default app
