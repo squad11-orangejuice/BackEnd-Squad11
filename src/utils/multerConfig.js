@@ -3,11 +3,14 @@ import path from 'path'
 
 const localStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const pasta = path.join(__dirname, '../../uploads')
+    const pasta =
+      'C:\\Users\\Carolina Rocha\\Documents\\repositorios\\BackEnd-Squad11\\uploads'
     cb(null, pasta)
   },
   filename: function (req, file, cb) {
-    cb(null, `${req.user.id}/${Date.now()}-${file.originalname}`)
+    const currentDate = new Date()
+    const formattedDate = currentDate.toISOString().replace(/[-T:.Z]/g, '')
+    cb(null, `${req.user.id}-${formattedDate}-${file.originalname}`)
   },
 })
 const upload = multer({
