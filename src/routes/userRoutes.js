@@ -11,8 +11,6 @@ userRoutes.post('/usuario/login', userLogin)
 userRoutes.post('usuario/login/google', loginSocial)
 userRoutes.post('/usuario/logout', logout)
 
-// midd autenticação a partir daqui
-// descobrir recebe params p/ buscar tags
 userRoutes.get('/descobrir', middlewareAutenticacao)
 
 export default userRoutes
