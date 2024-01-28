@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 import ProjetoTag from '../models/projeto_tag.js'
 import Tag from '../models/tag.js'
 dotenv.config()
-/* Recebe multipart form, importa o multer do arquivo de configurações como upload, envia imagem para bucket, salva string do endereço. Dados do projeto vão pra table projetos, utilizo split para separar as tags. Novas tags são salvas na tabela tags, todos os ids das tags (novas e antigas) são salvos em um array. Utilizado o método map para obter os ids das tags e depois envira para a tabela projeto_tags. */
+
 const novoProjeto = async (req, res) => {
   await database.sync()
   try {
@@ -17,7 +17,6 @@ const novoProjeto = async (req, res) => {
 
       const { titulo, link, descricao, tags } = req.body
 
-      // Criar projeto e salvar o retorno em uma variável para obter id (enviado para projeto_tags)
       const linkArquivo = req.file.location
       const projetoCriado = await Projeto.create({
         titulo,
@@ -28,7 +27,6 @@ const novoProjeto = async (req, res) => {
         user_id: req.user.id,
       })
 
-      // Separar tags recebidas via multipart form, verificar se já existe e criar caso não existam. Salvar em uma variável. Obter tag_id.
       const arrayTags = tags.split(',')
       const projetoId = projetoCriado.id
 
