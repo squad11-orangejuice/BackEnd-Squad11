@@ -18,7 +18,7 @@ const novoProjeto = async (req, res) => {
       const { titulo, link, descricao, tags } = req.body
 
       // Criar projeto e salvar o retorno em uma variável para obter id (enviado para projeto_tags)
-      const linkArquivo = req.file.path
+      const linkArquivo = req.file.location
       const projetoCriado = await Projeto.create({
         titulo,
         link,
