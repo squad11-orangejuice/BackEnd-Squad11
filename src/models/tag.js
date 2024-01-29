@@ -1,18 +1,18 @@
-const {DataTypes} = require("sequelize"); 
+import { DataTypes } from "sequelize";
 
-const database = require('../database/db');
+import database from "../database/db.js";
 
-const Tag = database.define('tag', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowsNull: false,
-        primaryKey: true
-    },
-    nome: {
-        type: DataTypes.STRING,
-        allowsNull: false,
-    }
+const Tag = database.define("tag", {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowsNull: false,
+    primaryKey: true,
+  },
+  nome: {
+    type: DataTypes.STRING,
+    allowsNull: false,
+  },
 });
 
-module.exports = Tag;
+export default Tag;
