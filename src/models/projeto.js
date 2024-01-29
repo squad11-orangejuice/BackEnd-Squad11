@@ -1,9 +1,9 @@
-import { DataTypes } from "sequelize";
 
-import database from "../database/db.js";
-import User from "./user.js";
+import { DataTypes } from 'sequelize'
+import sequelize from '../database/db.js'
 
-const Projeto = database.define("projeto", {
+const Projeto = await sequelize.define('projeto', {
+
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -16,28 +16,21 @@ const Projeto = database.define("projeto", {
   },
   link: {
     type: DataTypes.STRING,
-    allowsNull: false,
+    allowsNull: true,
   },
   descricao: {
     type: DataTypes.TEXT,
-    allowsNull: false,
+    allowsNull: true,
   },
   imagem: {
     type: DataTypes.STRING,
+    allowsNull: true,
   },
   data: {
     type: DataTypes.DATE,
-    allowsNull: false,
+    allowsNull: true,
   },
 });
 
-Projeto.belongsTo(User, {
-  constraint: true,
-  foreignKey: "user_id",
-});
+export default Projeto
 
-User.hasMany(Projeto, {
-  foreignKey: "user_id",
-});
-
-export default Projeto;
