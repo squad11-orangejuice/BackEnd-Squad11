@@ -1,7 +1,9 @@
+
 import { DataTypes } from 'sequelize'
 import sequelize from '../database/db.js'
 
 const Projeto = await sequelize.define('projeto', {
+
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -28,6 +30,7 @@ const Projeto = await sequelize.define('projeto', {
     type: DataTypes.DATE,
     allowsNull: true,
   },
-})
+});
 
 export default Projeto
+
