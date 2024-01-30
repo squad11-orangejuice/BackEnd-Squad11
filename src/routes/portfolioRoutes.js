@@ -3,12 +3,13 @@ import deleteProjeto from '../controllers/deleteProjetoController.js'
 import middlewareAutenticacao from '../middleware/middlewareAutenticacao.js'
 import middlewareUserProjeto from '../middleware/middlewareUserProjeto.js'
 import editarProjeto from '../controllers/editarProjeto.js'
+import verPortfolio from '../controllers/verPortfolio.js'
 
 const portfolioRoutes = express()
 
 portfolioRoutes.use(middlewareAutenticacao)
 
-portfolioRoutes.get('/portfolio')
+portfolioRoutes.get('/portfolio', verPortfolio)
 portfolioRoutes.post('/projeto/novo')
 // midd verificar se projetos pertencem ao usuário logado
 portfolioRoutes.use('/projeto/:id', middlewareUserProjeto)

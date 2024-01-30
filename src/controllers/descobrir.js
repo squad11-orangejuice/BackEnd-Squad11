@@ -1,7 +1,5 @@
 import Projeto from '../models/projeto.js'
 import User from '../models/user.js'
-import dotenv from 'dotenv'
-import ProjetoTag from '../models/projeto_tag.js'
 import Tag from '../models/tag.js'
 import database from '../database/db.js'
 
