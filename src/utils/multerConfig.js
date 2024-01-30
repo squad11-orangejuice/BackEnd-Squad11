@@ -1,6 +1,10 @@
 import multer from 'multer'
 import { S3Client } from '@aws-sdk/client-s3'
 import multerS3 from 'multer-s3'
+import sharp from 'sharp'
+
+/* Filtro de proporção e resize para garantir que o arquivo não quebre o layout. */
+// const filtroFotos = async (req, file, cb) => {}
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -9,7 +13,7 @@ const s3 = new S3Client({
     secretAccessKey: process.env.AWS_KEY,
   },
 })
-
+/* Configuração de upload formatando o nome do arquivo para incluir o id do cliente e data de envio. */
 const upload = multer({
   storage: multerS3({
     s3,
@@ -24,6 +28,7 @@ const upload = multer({
       cb(null, filename)
     },
   }),
+  // fileFilter: filtroFotos,
 })
 
 export default upload
