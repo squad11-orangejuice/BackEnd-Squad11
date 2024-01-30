@@ -8,14 +8,9 @@ dotenv.config()
 
 const app = express()
 app.use(express.json())
-
+app.use(cors())
 app.use(userRoutes)
 app.use(portfolioRoutes)
-const corsConfiguracao = {
-  // origin: 'linkprovisorio.com',
-  optionsSuccessStatus: 200,
-}
-app.use(cors(corsConfiguracao))
 
 const port = process.env.PORT || 3000
 
