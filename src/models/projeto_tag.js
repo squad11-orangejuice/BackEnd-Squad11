@@ -1,10 +1,10 @@
 import { DataTypes } from "sequelize";
-
-import database from "../database/db.js";
+import sequelize from "../database/db.js";
 import Projeto from "./projeto.js";
 import Tag from "./tag.js";
 
-const Projeto_tag = database.define("projeto_tag", {
+/* Ajuste nas associações conforme a documentação do sequelize: https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/ */
+const ProjetoTag = sequelize.define("projeto_tag", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -13,22 +13,7 @@ const Projeto_tag = database.define("projeto_tag", {
   },
 });
 
-Projeto_tag.belongsTo(Projeto, {
-  constraint: true,
-  foreignKey: "projeto_id",
-});
+Projeto.belongsToMany(Tag, { through: ProjetoTag, foreignKey: "projeto_id" });
+Tag.belongsToMany(Projeto, { through: ProjetoTag, foreignKey: "tag_id" });
 
-Projeto.hasMany(Projeto_tag, {
-  foreignKey: "projeto_id",
-});
-
-Projeto_tag.belongsTo(Tag, {
-  constraint: true,
-  foreignKey: "tag_id",
-});
-
-Tag.hasMany(Projeto_tag, {
-  foreignKey: "tag_id",
-});
-
-export default Projeto_tag;
+export default ProjetoTag;

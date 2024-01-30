@@ -5,7 +5,7 @@ import Tag from "./src/models/tag.js";
 import User from "./src/models/user.js";
 
 (async () => {
-  await database.sync();
+  await database.sync({ force: true });
 
   await User.findAll();
   await Projeto.findAll();

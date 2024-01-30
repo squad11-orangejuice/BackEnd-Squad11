@@ -1,28 +1,31 @@
-import database from "../database/db.js";
 import Projeto from "../models/projeto.js";
-import Projeto_tag from "../models/projeto_tag.js";
+import User from "../models/user.js";
 import Tag from "../models/tag.js";
+import database from "../database/db.js";
 
 const showProjeto = async (req, res) => {
   await database.sync();
-  const { id } = req.params;
+  const id = req.params.id;
   try {
-    const projeto = await Projeto.findByPk(id, { include: Projeto_tag });
-
-    const projetoTags = projeto.projeto_tags;
-
-    let tags = [];
-
-    projetoTags.forEach(async (tag) => {
-      tags.push(await Tag.findByPk(tag.tag_id));
-      console.log(tags);
+    const projeto = await Projeto.findByPk(id, {
+      attributes: ["titulo", "link", "descricao", "imagem", "data"],
+      include: [
+        {
+          model: User,
+          attributes: ["nome", "sobrenome"],
+        },
+        {
+          model: Tag,
+          attributes: ["nome"],
+          through: { attributes: [] },
+        },
+      ],
     });
 
-    return res.status(200).json({ projeto, tags });
+    return res.status(200).json(projeto);
   } catch (error) {
-    console.log(error, "erro no controller de mostrar projeto");
-
-    return res.status(500).json({ mensagem: "Erro interno no servidor" });
+    console.error("Erro ao buscar projetos:", error);
+    return res.status(500).send("Erro no servidor.");
   }
 };
 
