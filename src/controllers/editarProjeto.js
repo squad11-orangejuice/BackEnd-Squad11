@@ -6,7 +6,7 @@ import ProjetoTag from '../models/projeto_tag.js'
 import Tag from '../models/tag.js'
 dotenv.config()
 
-const novoProjeto = async (req, res) => {
+const editarProjeto = async (req, res) => {
   await database.sync()
   try {
     upload.single('imagem')(req, res, async (err) => {
@@ -14,49 +14,60 @@ const novoProjeto = async (req, res) => {
         console.error('Erro no upload', err)
         return res.status(500).send('Erro interno do servidor')
       }
-
       const { titulo, link, descricao, tags } = req.body
 
+      const idProjeto = req.params.id
       const linkArquivo = req.file.location
-      const projetoCriado = await Projeto.create({
-        titulo,
-        link,
-        descricao,
-        imagem: linkArquivo,
-        data: new Date(),
-        user_id: req.user.id,
-      })
+
+      await Projeto.update(
+        {
+          titulo,
+          link,
+          descricao,
+          imagem: linkArquivo,
+          data: new Date(),
+          user_id: req.user.id,
+        },
+        { where: { id: idProjeto } },
+      )
 
       const arrayTags = tags.split(',')
-      const projetoId = projetoCriado.id
+      // Se receber tags faz alteração, caso contrário mantém as tags existentes.
+      if (tags) {
+        await ProjetoTag.destroy({
+          where: {
+            projeto_id: idProjeto,
+          },
+        })
 
-      const tagsCriadas = await Promise.all(
-        arrayTags.map(async (nome) => {
-          try {
-            const [tag, created] = await Tag.findOrCreate({ where: { nome } })
-            const tagId = tag.id
-            return tagId
-          } catch (error) {
-            console.error(`Erro ao criar/encontrar a tag ${nome}:`, error)
-            return null
-          }
-        }),
-      )
+        const tagsCriadas = await Promise.all(
+          arrayTags.map(async (nome) => {
+            try {
+              const [tag, created] = await Tag.findOrCreate({ where: { nome } })
+              const tagId = tag.id
+              return tagId
+            } catch (error) {
+              console.error(`Erro ao criar/encontrar a tag ${nome}:`, error)
+              return null
+            }
+          }),
+        )
 
-      await Promise.all(
-        tagsCriadas.map(async (id) => {
-          try {
-            await ProjetoTag.create({
-              projeto_id: projetoId,
-              tag_id: id,
-            })
-          } catch (error) {
-            return res.status(500).send('Erro interno do servidor')
-          }
-        }),
-      )
+        await Promise.all(
+          tagsCriadas.map(async (id) => {
+            try {
+              await ProjetoTag.create({
+                projeto_id: idProjeto,
+                tag_id: id,
+              })
+            } catch (error) {
+              return res.status(500).send('Erro interno do servidor')
+            }
+          }),
+        )
+      }
 
-      return res.status(201).send('Projeto criado.')
+      return res.status(201).send('Projeto editado.')
     })
   } catch (error) {
     console.error('Erro em novoProjeto', error)
@@ -64,4 +75,4 @@ const novoProjeto = async (req, res) => {
   }
 }
 
-export default novoProjeto
+export default editarProjeto
