@@ -5,10 +5,36 @@ import ProjetoTag from '../models/projeto_tag.js'
 import Tag from '../models/tag.js'
 import database from '../database/db.js'
 
-/* Retornar dados do projeto: título, link, foto, data. Dados do usuário: nome e sobrenome e tags associadas, ordenando por id decrescente (projetos mais recentes aparecem primeiro) */
+/* Retornar dados do projeto: título, link, foto, data. Dados do usuário: nome e sobrenome e tags associadas, ordenando por id decrescente (projetos mais recentes aparecem primeiro. Incluir opção de busca via req.query */
+
 const descobrirProjetos = async (req, res) => {
   await database.sync()
   try {
+    const busca = req.query.tag
+
+    if (busca) {
+      let condicoesTags = {}
+      condicoesTags = {
+        model: Tag,
+        attributes: ['nome'],
+        through: { attributes: [] },
+        where: {
+          nome: Array.isArray(busca) ? busca : [busca],
+        },
+      }
+      const projetos = await Projeto.findAll({
+        attributes: ['titulo', 'link', 'descricao', 'imagem', 'data'],
+        include: [
+          {
+            model: User,
+            attributes: ['nome', 'sobrenome'],
+          },
+          condicoesTags, // Adiciona as condições das tags ao include
+        ],
+        order: [['id', 'DESC']],
+      })
+      return res.status(200).json(projetos)
+    }
     const projetos = await Projeto.findAll({
       attributes: ['titulo', 'link', 'descricao', 'imagem', 'data'],
       include: [
