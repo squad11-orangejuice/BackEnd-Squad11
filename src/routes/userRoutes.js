@@ -10,8 +10,8 @@ const userRoutes = express()
 userRoutes.post('/usuario/login/google', loginSocial)
 userRoutes.post('/usuario/cadastrar', create)
 userRoutes.post('/usuario/login', userLogin)
-userRoutes.post('/usuario/logout', logout)
 
+userRoutes.post('/usuario/logout', middlewareAutenticacao, logout)
 userRoutes.get('/descobrir', middlewareAutenticacao, descobrirProjetos)
 
 export default userRoutes
