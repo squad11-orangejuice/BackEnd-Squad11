@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"scripts": {
 		"test": "vitest",
-		"start": "nodemon ./app.js"
+		"start": "nodemon ./app.js",
+		"vercel-buidl": "npm start"
 	},
 	"type": "module",
 	"keywords": [],
