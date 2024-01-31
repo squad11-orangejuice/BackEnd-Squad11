@@ -8,7 +8,7 @@ const verPortfolio = async (req, res) => {
   const idUsuario = req.user.id
   try {
     const projetos = await Projeto.findAll({
-      attributes: ['titulo', 'link', 'descricao', 'imagem', 'data'],
+      attributes: ['id', 'titulo', 'link', 'descricao', 'imagem', 'data'],
       include: [
         {
           model: User,
