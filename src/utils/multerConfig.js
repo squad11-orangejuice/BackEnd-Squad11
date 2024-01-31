@@ -34,7 +34,7 @@ const upload = multer({
     key: function (req, file, cb) {
       const currentDate = new Date()
       const formattedDate = currentDate.toISOString().replace(/[-T:.Z]/g, '')
-      const filename = `${req.user.id}-${formattedDate}-${file.originalname}`
+      const filename = `${req.user.id}-${formattedDate}`
       cb(null, filename)
     },
   }),
