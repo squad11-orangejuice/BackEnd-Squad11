@@ -27,11 +27,10 @@ const novoProjeto = async (req, res) => {
         user_id: req.user.id,
       })
 
-      const arrayTags = tags.split(',')
       const projetoId = projetoCriado.id
 
       const tagsCriadas = await Promise.all(
-        arrayTags.map(async (nome) => {
+        tags.map(async (nome) => {
           try {
             const [tag, created] = await Tag.findOrCreate({ where: { nome } })
             const tagId = tag.id
