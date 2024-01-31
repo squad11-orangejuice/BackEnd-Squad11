@@ -21,20 +21,20 @@ const descobrirProjetos = async (req, res) => {
         },
       }
       const projetos = await Projeto.findAll({
-        attributes: ['titulo', 'link', 'descricao', 'imagem', 'data'],
+        attributes: ['id', 'titulo', 'link', 'descricao', 'imagem', 'data'],
         include: [
           {
             model: User,
             attributes: ['nome', 'sobrenome'],
           },
-          condicoesTags, // Adiciona as condições das tags ao include
+          condicoesTags,
         ],
         order: [['id', 'DESC']],
       })
       return res.status(200).json(projetos)
     }
     const projetos = await Projeto.findAll({
-      attributes: ['titulo', 'link', 'descricao', 'imagem', 'data'],
+      attributes: ['id', 'titulo', 'link', 'descricao', 'imagem', 'data'],
       include: [
         {
           model: User,
