@@ -3,16 +3,15 @@ import loginSocial from '../controllers/loginSocial.js'
 import userLogin from '../controllers/loginController.js'
 import create from '../controllers/RegisterController.js'
 import logout from '../controllers/logout.js'
+import descobrirProjetos from '../controllers/descobrir.js'
 import middlewareAutenticacao from '../middleware/middlewareAutenticacao.js'
 const userRoutes = express()
 
+userRoutes.post('/usuario/login/google', loginSocial)
 userRoutes.post('/usuario/cadastrar', create)
 userRoutes.post('/usuario/login', userLogin)
-userRoutes.post('usuario/login/google', loginSocial)
-userRoutes.post('/usuario/logout', logout)
 
-// midd autenticação a partir daqui
-// descobrir recebe params p/ buscar tags
-userRoutes.get('/descobrir', middlewareAutenticacao)
+userRoutes.post('/usuario/logout', middlewareAutenticacao, logout)
+userRoutes.get('/descobrir', middlewareAutenticacao, descobrirProjetos)
 
 export default userRoutes

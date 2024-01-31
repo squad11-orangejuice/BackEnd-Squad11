@@ -23,11 +23,9 @@ const userLogin = async (req, res) => {
 
     const senhaValida = await bcrypt.compare(password, user.password)
     if (!senhaValida) {
-      return res.status(401).json({ mensagem: 'Usuári ou senha inválidos' })
+      return res.status(401).json({ mensagem: 'Usuário ou senha inválidos' })
     }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD, {
-      expiresIn: process.env.JWT_EXPIRE,
-    })
+    const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD)
 
     await Token.create({
       token,
@@ -36,10 +34,10 @@ const userLogin = async (req, res) => {
     })
 
     const { password: _, google_id: __, ...userLogado } = user
-    return res.status(200).json({ userLogado, token })
+    return res.status(200).json({ token })
   } catch (error) {
     console.error(error, 'Erro no controller de login')
-    res.status(500).json({ mensagem: 'Erro intero do servidor.' })
+    res.status(500).json({ mensagem: 'Erro interno do servidor.' })
   }
 }
 

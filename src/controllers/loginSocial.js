@@ -16,13 +16,23 @@ const loginSocial = async (req, res) => {
         email,
       },
     })
+
     if (!user) {
-      await User.create({
+      const newUser = await User.create({
         nome: given_name,
         sobrenome: family_name,
         email,
         google_id: sub,
       })
+      const token = jwt.sign({ id: newUser.id }, process.env.JWT_PASSWORD, {
+        expiresIn: process.env.JWT_EXPIRE,
+      })
+      await Token.create({
+        token,
+        isValid: true,
+        user_id: newUser.id,
+      })
+      return res.status(200).json({ token })
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD, {
       expiresIn: process.env.JWT_EXPIRE,
@@ -33,8 +43,7 @@ const loginSocial = async (req, res) => {
       user_id: user.id,
     })
 
-    const { password: _, google_id: __, ...userLogado } = user
-    return res.status(200).json({ userLogado, token })
+    return res.status(200).json({ token })
   } catch (error) {
     console.error(error, 'Erro no controller de login social')
     res.status(500).json({ mensagem: 'Erro no servidor' })

@@ -1,9 +1,7 @@
 import { DataTypes } from 'sequelize'
+import sequelize from '../database/db.js'
 
-import { define } from '../database/db'
-import User, { hasMany } from './user'
-
-const Projeto = define('projeto', {
+const Projeto = await sequelize.define('projeto', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -24,20 +22,12 @@ const Projeto = define('projeto', {
   },
   imagem: {
     type: DataTypes.STRING,
+    allowsNull: false,
   },
   data: {
     type: DataTypes.DATE,
     allowsNull: false,
   },
-})
-
-Projeto.belongsTo(User, {
-  constraint: true,
-  foreignKey: 'user_id',
-})
-
-hasMany(Projeto, {
-  foreignKey: 'user_id',
 })
 
 export default Projeto

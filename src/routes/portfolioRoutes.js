@@ -1,15 +1,23 @@
-import express from 'express'
-import middlewareAutenticacao from '../middleware/middlewareAutenticacao.js'
+import express from "express";
+import deleteProjeto from "../controllers/deleteProjetoController.js";
+import middlewareAutenticacao from "../middleware/middlewareAutenticacao.js";
+import middlewareUserProjeto from "../middleware/middlewareUserProjeto.js";
+import editarProjeto from "../controllers/editarProjeto.js";
+import verPortfolio from "../controllers/verPortfolio.js";
+import novoProjeto from "../controllers/novoProjeto.js";
+import verProjeto from "../controllers/verProjeto.js";
 
-const portfolioRoutes = express()
-// Middleware utilizado para todas as rotas
-portfolioRoutes.use(middlewareAutenticacao)
+const portfolioRoutes = express();
 
-portfolioRoutes.get('/home')
-portfolioRoutes.post('/projeto/novo')
+portfolioRoutes.use(middlewareAutenticacao);
+
+portfolioRoutes.get("/portfolio", verPortfolio);
+portfolioRoutes.post("/projeto/novo", novoProjeto);
 // midd verificar se projetos pertencem ao usuário logado
-portfolioRoutes.put('/projeto/editar/:id')
-portfolioRoutes.delete('/projeto/deletar/:id')
-portfolioRoutes.get('/projeto/:id')
+portfolioRoutes.use("/projeto/:id", middlewareUserProjeto);
 
-export default portfolioRoutes
+portfolioRoutes.put("/projeto/:id", editarProjeto);
+portfolioRoutes.delete("/projeto/:id", deleteProjeto);
+portfolioRoutes.get("/projeto/show/:id", verProjeto);
+
+export default portfolioRoutes;
