@@ -16,7 +16,7 @@ const deletarImagem = async (linkFotoAtual) => {
   }
   try {
     const deleteFoto = new DeleteObjectCommand(params)
-    await await s3.send(deleteFoto)
+    await s3.send(deleteFoto)
     console.log('Arquivo deletado com sucesso.')
   } catch (err) {
     console.log('Erro ao deletar o arquivo', err)
