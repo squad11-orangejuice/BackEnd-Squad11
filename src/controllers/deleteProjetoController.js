@@ -10,11 +10,7 @@ const deleteProjeto = async (req, res) => {
 
     await deletarImagem(projeto.imagem);
 
-    await Projeto.destroy({
-      where: {
-        id: req.params.id,
-      },
-    });
+    await projeto.destroy();
     return res.status(200).json({ mensagem: "Projeto deletado com sucesso" });
   } catch (error) {
     console.log(error, "erro no controller de deletar projeto");
