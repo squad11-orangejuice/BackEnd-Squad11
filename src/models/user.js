@@ -32,7 +32,7 @@ const User = await sequelize.define('user', {
     allowsNull: true,
   },
   avatar: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     unique: true,
     allowsNull: true,
   },
