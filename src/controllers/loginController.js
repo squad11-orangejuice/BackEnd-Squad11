@@ -33,8 +33,8 @@ const userLogin = async (req, res) => {
       user_id: user.id,
     })
 
-    const { password: _, google_id: __, ...userLogado } = user
-    return res.status(200).json({ token })
+    const { nome, sobrenome, avatar } = user
+    return res.status(200).json({ nome, sobrenome, avatar, token })
   } catch (error) {
     console.error(error, 'Erro no controller de login')
     res.status(500).json({ mensagem: 'Erro interno do servidor.' })
