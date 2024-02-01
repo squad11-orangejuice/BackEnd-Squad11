@@ -9,7 +9,7 @@ dotenv.config()
 
 const loginSocial = async (req, res) => {
   await database.sync()
-  const { sub, given_name, family_name, email } = req.body
+  const { sub, given_name, family_name, email, avatar } = req.body
   try {
     const user = await User.findOne({
       where: {
@@ -23,6 +23,7 @@ const loginSocial = async (req, res) => {
         sobrenome: family_name,
         email,
         google_id: sub,
+        avatar,
       })
       const token = jwt.sign({ id: newUser.id }, process.env.JWT_PASSWORD, {
         expiresIn: process.env.JWT_EXPIRE,
@@ -32,7 +33,8 @@ const loginSocial = async (req, res) => {
         isValid: true,
         user_id: newUser.id,
       })
-      return res.status(200).json({ token })
+
+      return res.status(200).json({ given_name, family_name, avatar, token })
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD, {
       expiresIn: process.env.JWT_EXPIRE,
@@ -43,7 +45,7 @@ const loginSocial = async (req, res) => {
       user_id: user.id,
     })
 
-    return res.status(200).json({ token })
+    return res.status(200).json({ given_name, family_name, avatar, token })
   } catch (error) {
     console.error(error, 'Erro no controller de login social')
     res.status(500).json({ mensagem: 'Erro no servidor' })
