@@ -85,7 +85,9 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"exec": [],
+								"exec": [
+									""
+								],
 								"type": "text/javascript"
 							}
 						}
@@ -95,7 +97,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"sub\": \"233226\",\r\n    \"given_name\": \"fulano\",\r\n\t\"family_name\": \"da silva\",\r\n\t\"email\": \"fulano@email.com\"\r\n}",
+							"raw": "{\r\n\t\"sub\": \"23443226\",\r\n    \"given_name\": \"fulano\",\r\n\t\"family_name\": \"da silva\",\r\n\t\"email\": \"fulano@email.com\",\r\n    \"avatar\": \"linkdoavatarfornecidopelogoogle\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -113,7 +115,7 @@
 								"google"
 							]
 						},
-						"description": "### User Login via Google\n\nPermite que usuário faça login através do Google. Caso ainda não seja cadastrado, gera um novo cadastro com os dados recebidos no body. Todos os dados abaixo são obrigatórios.\n\n#### Request Body\n\n- `sub` (string): Google sub ID.\n- `given_name` (string): Nome.\n- `family_name` (string): Sobrenome.\n- `email` (string): The user's email address.\n    \n\n#### Response\n\nRetorna status code 200 e json com o token de autenticação.\n\nExample:\n\n``` json\n{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"\n}\n\n ```"
+						"description": "### User Login via Google\n\nPermite que usuário faça login através do Google.\n\nCaso ainda não seja cadastrado, gera um novo cadastro com os dados recebidos no body.\n\nCaso seja cadastrado mas não tenha avatar, insere o avatar no cadastro atual.\n\nTodos os dados abaixo são obrigatórios.\n\n#### Request Body\n\n- `sub` (string): Google sub ID.\n- `given_name` (string): Nome.\n- `family_name` (string): Sobrenome.\n- `email` (string): E-mail do usuário.\n- `avatar` (string): Link do avatar fornecido pelo Google.\n    \n\n#### Response\n\nRetorna status code 200 e JSON com nome, sobrenome, link do avatar e token de autenticação.\n\nExample:\n\n``` json\n{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -204,7 +206,7 @@
 								"descobrir"
 							]
 						},
-						"description": "Rota GET para retornar todos os projetos cadastrados, ordenados do mais recente para o mais antigo.\n\nA resposta em caso de sucesso será status code 200 e um JSON com um array de objetos contendo os seguintes dados:\n\n- \"titulo\",\n- \"link\",\n- \"descricao\",\n- \"imagem\" (link para o arquivo no bucket que abre no navegador),\n- \"data\",\n- \"user\" (com nome e sobrenome do usuário que criou o projeto),\n- \"tags\" (array com tags associadas ao projeto)\n    \n\n**Exemplo de retorno:**\n\n``` javascript\n{\n\"titulo\": \"projetotestefinal\",\n        \"link\": \"linkfoiprobucket\",\n        \"descricao\": \"uma descrição mais longa do projeto blablabla\",\n        \"imagem\": \"https://squad11-orange-fcamara.s3.sa-east-1.amazonaws.com/2-20240130010216931-OIP.jpeg\",\n        \"data\": \"2024-01-30T01:02:17.429Z\",\n        \"user\": {\n            \"nome\": \"gustavo\",\n            \"sobrenome\": \"rocha\"\n        },\n        \"tags\": [\n            {\n                \"nome\": \" tag20\"\n            },\n            {\n                \"nome\": \" tag5\"\n            },\n            {\n                \"nome\": \"tag1\"\n            }\n        ]\n    },\n\n ```"
+						"description": "Rota GET para retornar todos os projetos cadastrados, ordenados do mais recente para o mais antigo.\n\nA resposta em caso de sucesso será status code 200 e um JSON com um array de objetos contendo os seguintes dados:\n\n- \"titulo\",\n- \"link\",\n- \"descricao\",\n- \"imagem\" (link para o arquivo no bucket que abre no navegador),\n- \"data\",\n- \"user\" (com id, nome, sobrenome e link do avatar do usuário que criou o projeto),\n    \n- \"tags\" (array com id e nome das tags associadas ao projeto)\n    \n\n**Exemplo de retorno:**\n\n``` json\n[\n    {\n        \"id\": 51,\n        \"titulo\": \"Nina e Mirela\",\n        \"link\": \"link.com\",\n        \"descricao\": \"wafoknlkawnf\",\n        \"imagem\": \"https://squad11-orange-fcamara.s3.sa-east-1.amazonaws.com/1-20240131192103132-blob\",\n        \"data\": \"2024-01-31T19:21:03.684Z\",\n        \"user\": {\n            \"id\": 1,\n            \"nome\": \"carol\",\n            \"sobrenome\": \"rocha\",\n            \"avatar\": null\n        },\n        \"tags\": [\n            {\n                \"id\": 13,\n                \"nome\": \"UX\"\n            }\n        ]\n    }]\n\n ```"
 					},
 					"response": []
 				},
@@ -232,7 +234,7 @@
 								"portfolio"
 							]
 						},
-						"description": "Rota GET para retornar todos os projetos pertencentes ao usuário cadastrado a serem exibidos na página \"Meu portfólio\", ordenados do mais recente para o mais antigo.\n\nA resposta em caso de sucesso será status code 200 e um JSON com um array de objetos contendo os seguintes dados:\n\n- \"titulo\",\n- \"link\",\n- \"descricao\",\n- \"imagem\" (link para o arquivo no bucket que abre no navegador),\n- \"data\",\n- \"user\" (com nome e sobrenome do usuário que criou o projeto),\n- \"tags\" (array com tags associadas ao projeto)\n    \n\n``` json\nExemplo de retorno:\n\n\"titulo\": \"projetotestefinal\",\n        \"link\": \"linkfoiprobucket\",\n        \"descricao\": \"uma descrição mais longa do projeto blablabla\",\n        \"imagem\": \"https://squad11-orange-fcamara.s3.sa-east-1.amazonaws.com/2-20240130010216931-OIP.jpeg\",\n        \"data\": \"2024-01-30T01:02:17.429Z\",\n        \"user\": {\n            \"nome\": \"gustavo\",\n            \"sobrenome\": \"rocha\"\n        },\n        \"tags\": [\n            {\n                \"nome\": \" tag20\"\n            },\n            {\n                \"nome\": \" tag5\"\n            },\n            {\n                \"nome\": \"tag1\"\n            }\n        ]\n    },\n ```"
+						"description": "Rota GET para retornar todos os projetos pertencentes ao usuário cadastrado a serem exibidos na página \"Meu portfólio\", ordenados do mais recente para o mais antigo.\n\nA resposta em caso de sucesso será status code 200 e um JSON com um array de objetos contendo os seguintes dados:\n\n- \"titulo\",\n- \"link\",\n- \"descricao\",\n- \"imagem\" (link para o arquivo no bucket que abre no navegador),\n- \"data\",\n- \"user\" (com id, nome, sobrenome e link do avatar do usuário que criou o projeto),\n    \n- \"tags\" (array com tags associadas ao projeto)\n    \n\n``` json\nExemplo de retorno:\n[\n    {\n        \"id\": 52,\n        \"titulo\": \"Novo teste\",\n        \"link\": \"link.com\",\n        \"descricao\": \"Descrição do projeto\",\n        \"imagem\": \"https://squad11-orange-fcamara.s3.sa-east-1.amazonaws.com/4-20240201165444601\",\n        \"data\": \"2024-02-01T16:54:45.087Z\",\n        \"user\": {\n            \"id\": 4,\n            \"nome\": \"fulano\",\n            \"sobrenome\": \"da silva\",\n            \"avatar\": \"linkdoavatarfornecidopelogoogle\"\n        },\n        \"tags\": [\n            {\n                \"id\": 1,\n                \"nome\": \"tag1\"\n            },\n            {\n                \"id\": 2,\n                \"nome\": \"tag2\"\n            }\n        ]\n    }\n]\n\n ```"
 					},
 					"response": []
 				},
@@ -256,7 +258,7 @@
 							"formdata": [
 								{
 									"key": "titulo",
-									"value": "Projeto no servidor",
+									"value": "Novo teste",
 									"type": "text"
 								},
 								{
@@ -290,7 +292,8 @@
 								{
 									"key": "tags[]",
 									"value": "tag teste",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -373,7 +376,7 @@
 								}
 							]
 						},
-						"description": "Rota PUT para editar um projeto específico. Recebe a id do projeto via URL, verifica se o projeto de fato pertence ao usuário e recebe os dados abaixo via multipart form-data.\n\nTodos os dados são opcionais.  \n  \nDeleta as tags antes associadas e cria novas associações com as tags recebidas."
+						"description": "Rota PUT para editar um projeto específico. Recebe a id do projeto via URL, verifica se o projeto de fato pertence ao usuário e recebe os dados abaixo via multipart form-data.\n\nTodos os dados são opcionais.\n\nDeleta as tags antes associadas e cria novas associações com as tags recebidas.\n\nCaso seja enviada uma nova imagem, a imagem anterior é deletada do bucket."
 					},
 					"response": []
 				},
@@ -393,23 +396,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/projeto/:id",
+							"raw": "{{base_url}}/projeto/show/52",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"projeto",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "5",
-									"description": "Id do projeto a ser editado."
-								}
+								"show",
+								"52"
 							]
 						},
-						"description": "Rota PUT para editar um projeto específico. Recebe a id do projeto via URL, verifica se o projeto de fato pertence ao usuário e recebe os dados abaixo via multipart form-data.\n\nTodos os dados são opcionais.  \n  \nDeleta as tags antes associadas e cria novas associações com as tags recebidas."
+						"description": "Rota GET para visualizar um projeto específico. Recebe o id do projeto como parâmetro na URL e bearer token no head e retorna os dados do projeto solicitado.\n\nÉ possível ver qualquer projeto cadastrado independente da autoria.  \n  \nEm caso de sucesso retorna status code 200 e um JSON conforme exemplo abaixo:\n\n``` json\nExemplo de retorno:\n\n{\n    \"id\": 52,\n    \"titulo\": \"Novo teste\",\n    \"link\": \"link.com\",\n    \"descricao\": \"Descrição do projeto\",\n    \"imagem\": \"https://squad11-orange-fcamara.s3.sa-east-1.amazonaws.com/4-20240201165444601\",\n    \"data\": \"2024-02-01T16:54:45.087Z\",\n    \"user\": {\n        \"id\": 4,\n        \"nome\": \"fulano\",\n        \"sobrenome\": \"da silva\",\n        \"avatar\": \"linkdoavatarfornecidopelogoogle\"\n    },\n    \"tags\": [\n        {\n            \"id\": 1,\n            \"nome\": \"tag1\"\n        },\n        {\n            \"id\": 2,\n            \"nome\": \"tag2\"\n        }\n    ]\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -440,11 +437,12 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2",
+									"value": "52",
 									"description": "Id do projeto a ser deletado."
 								}
 							]
-						}
+						},
+						"description": "Rota DELETE para deletar um projeto específico. Recebe o id do projeto como parâmetro via url e bearer token no head.\n\nPassa pelo middleware para verificar se o projeto percente ao usuário logado.\n\nDeleta os dados do projeto do banco de dados e a foto do bucket.\n\nEm caso de sucesso retorna status code 200."
 					},
 					"response": []
 				}
