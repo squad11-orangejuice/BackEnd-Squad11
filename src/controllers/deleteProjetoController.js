@@ -1,10 +1,15 @@
 import database from "../database/db.js";
 import Projeto from "../models/projeto.js";
+import deletarImagem from "../utils/deletarFoto.js";
 
 const deleteProjeto = async (req, res) => {
   await database.sync();
 
   try {
+    const projeto = await Projeto.findByPk(req.params.id);
+
+    await deletarImagem(projeto.imagem);
+
     await Projeto.destroy({
       where: {
         id: req.params.id,
