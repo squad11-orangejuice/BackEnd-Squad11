@@ -36,6 +36,16 @@ const loginSocial = async (req, res) => {
 
       return res.status(200).json({ given_name, family_name, avatar, token })
     }
+
+    if (!user.avatar) {
+      await User.update(
+        { avatar },
+        {
+          where: { email },
+        },
+      )
+    }
+
     const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD, {
       expiresIn: process.env.JWT_EXPIRE,
     })
