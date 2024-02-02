@@ -25,9 +25,7 @@ const loginSocial = async (req, res) => {
         google_id: sub,
         avatar,
       })
-      const token = jwt.sign({ id: newUser.id }, process.env.JWT_PASSWORD, {
-        expiresIn: process.env.JWT_EXPIRE,
-      })
+      const token = jwt.sign({ id: newUser.id }, process.env.JWT_PASSWORD)
       await Token.create({
         token,
         isValid: true,
@@ -46,9 +44,7 @@ const loginSocial = async (req, res) => {
       )
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD, {
-      expiresIn: process.env.JWT_EXPIRE,
-    })
+    const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD)
     await Token.create({
       token,
       isValid: true,
