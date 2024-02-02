@@ -2,6 +2,7 @@ import Projeto from '../models/projeto.js'
 import User from '../models/user.js'
 import Tag from '../models/tag.js'
 import database from '../database/db.js'
+import { Op } from 'sequelize'
 
 /* Retornar dados do projeto: título, link, foto, data. Dados do usuário: nome e sobrenome e tags associadas, ordenando por id decrescente (projetos mais recentes aparecem primeiro. Incluir opção de busca via req.query */
 
@@ -38,14 +39,19 @@ const descobrirProjetos = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['nome', 'sobrenome'],
+          attributes: ['id', 'nome', 'sobrenome', 'avatar'],
         },
         {
           model: Tag,
-          attributes: ['nome'],
+          attributes: ['id', 'nome'],
           through: { attributes: [] },
         },
       ],
+      where: {
+        user_id: {
+          [Op.ne]: req.user.id,
+        },
+      },
       order: [['id', 'DESC']],
     })
 

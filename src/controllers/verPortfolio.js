@@ -12,12 +12,12 @@ const verPortfolio = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['nome', 'sobrenome'],
+          attributes: ['id', 'nome', 'sobrenome', 'avatar'],
           where: { id: idUsuario },
         },
         {
           model: Tag,
-          attributes: ['nome'],
+          attributes: ['id', 'nome'],
           through: { attributes: [] },
         },
       ],

@@ -4,11 +4,14 @@ import upload from '../utils/multerConfig.js'
 import dotenv from 'dotenv'
 import ProjetoTag from '../models/projeto_tag.js'
 import Tag from '../models/tag.js'
+import deletarImagem from '../utils/deletarFoto.js'
+
 dotenv.config()
 
 const editarProjeto = async (req, res) => {
-  await database.sync()
   try {
+    await database.sync()
+
     upload.single('imagem')(req, res, async (err) => {
       if (err) {
         console.error('Erro no upload', err)
@@ -16,8 +19,22 @@ const editarProjeto = async (req, res) => {
       }
       const { titulo, link, descricao, tags } = req.body
 
-      const idProjeto = req.params.id
       const linkArquivo = req.file.location
+      const idProjeto = req.params.id
+      /* Caso seja enviado novo arquivo */
+      if (linkArquivo) {
+        /* Obter link da foto atual e chamar função para deletar */
+        const linkFoto = await Projeto.findByPk(idProjeto, {
+          attributes: ['imagem'],
+        })
+        const linkFotoAtual = linkFoto.imagem
+        /* Chamada da função para deletar passando o link como parâmetro */
+        try {
+          await deletarImagem(linkFotoAtual)
+        } catch (error) {
+          console.error('Erro ao deletar imagem:', error)
+        }
+      }
 
       await Projeto.update(
         {
@@ -30,9 +47,7 @@ const editarProjeto = async (req, res) => {
         },
         { where: { id: idProjeto } },
       )
-
-      const arrayTags = tags.split(',')
-      // Se receber tags faz alteração, caso contrário mantém as tags existentes.
+      /* Caso sejam recebidas novas tags, deleta as tags associadas e cria novas para evitar duplicidade. */
       if (tags) {
         await ProjetoTag.destroy({
           where: {
@@ -41,7 +56,7 @@ const editarProjeto = async (req, res) => {
         })
 
         const tagsCriadas = await Promise.all(
-          arrayTags.map(async (nome) => {
+          tags.map(async (nome) => {
             try {
               const [tag, created] = await Tag.findOrCreate({ where: { nome } })
               const tagId = tag.id
@@ -70,7 +85,7 @@ const editarProjeto = async (req, res) => {
       return res.status(201).send('Projeto editado.')
     })
   } catch (error) {
-    console.error('Erro em novoProjeto', error)
+    console.error('Erro em editarProjeto', error)
     return res.status(500).send('Erro interno do servidor')
   }
 }

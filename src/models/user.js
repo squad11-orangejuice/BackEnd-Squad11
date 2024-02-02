@@ -31,6 +31,11 @@ const User = await sequelize.define('user', {
     unique: true,
     allowsNull: true,
   },
+  avatar: {
+    type: DataTypes.TEXT,
+    unique: true,
+    allowsNull: true,
+  },
 })
 
 User.hasMany(Projeto, { foreignKey: 'user_id' })
