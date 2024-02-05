@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "55a15d11-c030-45f3-b1e6-2a959ad557f6",
 		"name": "Orange Portfolio",
-		"description": "Documentação da API do Orange Portfolio construída pelo Squad 11 do Orange Hackathon.\n\nPor convenção do grupo essa API foi construída utilizando Node.js e express.js e tem as funções de criar usuário, login via formulário e login social, logout, página descobrir, meu portfólio, criar, editar, ver e deletar um projeto específico.\n\nUtilizamos a bcrypt para encriptar as senhas dos usuários e o jwt para gerar os tokens de autenticação.\n\nPara os dados utilizamos o Sequelize como ORM.\n\n#### Grupo\n\nAlanna Silva\n\nCarolina Rocha Floro\n\nDouglas dos Santos Oliveira\n\nWelen Almeida",
+		"description": "Documentação da API do Orange Portfolio construída pelo Squad 11 do Orange Hackathon.\n\nPor convenção do grupo essa API foi construída utilizando Node.js e express.js e tem as funções de criar usuário, login via formulário e login social, logout, página descobrir, meu portfólio, criar, editar, ver e deletar um projeto específico.\n\nUtilizamos a bcrypt para encriptar as senhas dos usuários e o jwt para gerar os tokens de autenticação.\n\nPara os dados utilizamos o Sequelize como ORM.\n\n**Link do deploy:** [<b>https://testeojsqd11repooriginal.onrender.com</b>](https://testeojsqd11repooriginal.onrender.com)\n\n#### Grupo\n\nAlanna Silva\n\nCarolina Rocha Floro\n\nDouglas dos Santos Oliveira\n\nWelen Almeida",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28474070",
 		"_collection_link": "https://red-meteor-397249.postman.co/workspace/squad11-orange~9fc1bbaf-422b-4d03-a882-0b91d24e28b0/collection/28474070-55a15d11-c030-45f3-b1e6-2a959ad557f6?action=share&source=collection_link&creator=28474070"
@@ -46,38 +46,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"",
-									"pm.test(\"Response status code is 200\", function () {",
-									"    pm.expect(pm.response.code).to.equal(200);",
-									"});",
-									"",
-									"",
-									"pm.test(\"Response has the required field 'token'\", function () {",
-									"    const responseData = pm.response.json();",
-									"    pm.expect(responseData.token).to.exist;",
-									"});",
-									"",
-									"",
-									"pm.test(\"Token is a non-empty string\", function () {",
-									"    const responseData = pm.response.json();",
-									"",
-									"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");",
-									"});",
-									"",
-									"",
-									"pm.test(\"Content-Type header is application/json\", function () {",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
-									"});",
-									"",
-									"",
-									"pm.test(\"Token is a valid JWT (JSON Web Token)\", function () {",
-									"    const responseData = pm.response.json();",
-									"",
-									"    pm.expect(responseData.token).to.be.a('string');",
-									"    pm.expect(responseData.token).to.match(/^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$/);",
-									"});",
-									"",
-									""
+									"const response = pm.response.json();",
+									"pm.collectionVariables.set(\"bearer_token\", response.token);"
 								],
 								"type": "text/javascript"
 							}
@@ -121,6 +91,25 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"bearer_token\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -307,7 +296,7 @@
 								"novo"
 							]
 						},
-						"description": "Rota POST para criar um novo projeto. Recebe os dados via multipart form-data e retorna em caso de sucesso status code 201 e a mensagem \"Projeto criado\".\n\nTodos os dados são obrigatórios, inclusive o arquivo e pelo menos uma tag.\n\nO arquivo deve ser em formato JPEG ou PNG com a proporção de 644 x 421.\n\nAntes de associar as tags ao projeto o controller verifica e cria apenas as tags que ainda não existem para evitar duplicidade."
+						"description": "Rota POST para criar um novo projeto. Recebe os dados via multipart form-data e retorna em caso de sucesso status code 201 e a mensagem \"Projeto criado\".\n\nTodos os dados são obrigatórios, inclusive o arquivo e pelo menos uma tag.\n\nO arquivo deve ser em formato JPEG ou PNG.\n\nAntes de associar as tags ao projeto o controller verifica e cria apenas as tags que ainda não existem para evitar duplicidade.\n\nAo ser enviada para o bucket a imagem é renomeada, recebendo o id do usuário e a data de upload."
 					},
 					"response": []
 				},
