@@ -6,8 +6,6 @@ import database from '../database/db.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
-/* controller login: recebe no body email e senha, busca usuario no db, compara senha com bcrypt. Se não existe o usuário, mensagem genérica de usuário ou senha inválidos. Se existe usuário, gerar token. Desestruturação da variável user para excluir a senha e retornar os demais dados do usuário logado junto com o token. O token é enviado para a tabela de tokens como válido. */
-
 const userLogin = async (req, res) => {
   await database.sync({ force: false })
   const { email, password } = req.body
@@ -36,8 +34,8 @@ const userLogin = async (req, res) => {
     const { nome, sobrenome, avatar } = user
     return res.status(200).json({ nome, sobrenome, avatar, token })
   } catch (error) {
-    console.error(error, 'Erro no controller de login')
-    res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    console.error('Erro no controle de login:', error)
+    res.status(500).json({ mensagem: 'Erro no servidor.' })
   }
 }
 

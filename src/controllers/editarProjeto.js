@@ -15,24 +15,26 @@ const editarProjeto = async (req, res) => {
     upload.single('imagem')(req, res, async (err) => {
       if (err) {
         console.error('Erro no upload', err)
-        return res.status(500).send('Erro interno do servidor')
+        return res.status(500).send('Erro no servidor')
       }
       const { titulo, link, descricao, tags } = req.body
 
       const linkArquivo = req.file.location
       const idProjeto = req.params.id
-      /* Caso seja enviado novo arquivo */
+
       if (linkArquivo) {
-        /* Obter link da foto atual e chamar função para deletar */
         const linkFoto = await Projeto.findByPk(idProjeto, {
           attributes: ['imagem'],
         })
         const linkFotoAtual = linkFoto.imagem
-        /* Chamada da função para deletar passando o link como parâmetro */
+
         try {
           await deletarImagem(linkFotoAtual)
         } catch (error) {
-          console.error('Erro ao deletar imagem:', error)
+          console.error(
+            'Erro ao deletar imagem no controller de editar projeto:',
+            error,
+          )
         }
       }
 
@@ -47,7 +49,7 @@ const editarProjeto = async (req, res) => {
         },
         { where: { id: idProjeto } },
       )
-      /* Caso sejam recebidas novas tags, deleta as tags associadas e cria novas para evitar duplicidade. */
+
       if (tags) {
         await ProjetoTag.destroy({
           where: {
@@ -62,7 +64,10 @@ const editarProjeto = async (req, res) => {
               const tagId = tag.id
               return tagId
             } catch (error) {
-              console.error(`Erro ao criar/encontrar a tag ${nome}:`, error)
+              console.error(
+                `Erro ao criar/encontrar a tag ${nome} no controller de editar projeto:`,
+                error,
+              )
               return null
             }
           }),
@@ -76,7 +81,8 @@ const editarProjeto = async (req, res) => {
                 tag_id: id,
               })
             } catch (error) {
-              return res.status(500).send('Erro interno do servidor')
+              console.error('Erro no controller de editar projetos:', error)
+              return res.status(500).send('Erro no servidor')
             }
           }),
         )

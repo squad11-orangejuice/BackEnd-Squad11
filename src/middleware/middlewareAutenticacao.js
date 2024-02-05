@@ -5,8 +5,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-/* Recebe o token no header, identifica o usuário e valida com o jwt */
-
 const middlewareAutenticacao = async (req, res, next) => {
   const { authorization } = req.headers
   if (!authorization) {
@@ -29,8 +27,8 @@ const middlewareAutenticacao = async (req, res, next) => {
 
     next()
   } catch (error) {
-    console.error('Erro na autenticação', error)
-    return res.status(500).send('Erro interno do servidor.')
+    console.error('Erro na autenticação: ', error)
+    return res.status(500).send('Erro no servidor.')
   }
 }
 

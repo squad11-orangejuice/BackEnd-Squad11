@@ -12,7 +12,7 @@ const novoProjeto = async (req, res) => {
     upload.single('imagem')(req, res, async (err) => {
       if (err) {
         console.error('Erro no upload', err)
-        return res.status(500).send('Erro interno do servidor')
+        return res.status(500).send('Erro no servidor')
       }
 
       const { titulo, link, descricao, tags } = req.body
@@ -50,7 +50,8 @@ const novoProjeto = async (req, res) => {
               tag_id: id,
             })
           } catch (error) {
-            return res.status(500).send('Erro interno do servidor')
+            console.error()
+            return res.status(500).send('Erro no servidor')
           }
         }),
       )
@@ -58,7 +59,7 @@ const novoProjeto = async (req, res) => {
       return res.status(201).send('Projeto criado.')
     })
   } catch (error) {
-    console.error('Erro em novoProjeto', error)
+    console.error('Erro em novoProjeto: ', error)
     return res.status(500).send('Erro interno do servidor')
   }
 }

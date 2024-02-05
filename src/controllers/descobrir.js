@@ -4,8 +4,6 @@ import Tag from '../models/tag.js'
 import database from '../database/db.js'
 import { Op } from 'sequelize'
 
-/* Retornar dados do projeto: título, link, foto, data. Dados do usuário: nome e sobrenome e tags associadas, ordenando por id decrescente (projetos mais recentes aparecem primeiro. Incluir opção de busca via req.query */
-
 const descobrirProjetos = async (req, res) => {
   await database.sync()
   try {
@@ -57,7 +55,7 @@ const descobrirProjetos = async (req, res) => {
 
     return res.status(200).json(projetos)
   } catch (error) {
-    console.error('Erro ao buscar projetos:', error)
+    console.error('Erro no controller da página descobrir:', error)
     return res.status(500).send('Erro no servidor.')
   }
 }
